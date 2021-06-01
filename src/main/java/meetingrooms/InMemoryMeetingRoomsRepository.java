@@ -22,23 +22,25 @@ public class InMemoryMeetingRoomsRepository implements MeetingRoomsRepository {
 
     @Override
     public void printNames() {
-        orderedByHungarianName().forEach(e -> System.out.println(e));
+        orderedByHungarianName().forEach(System.out::println);
 
     }
 
     @Override
     public void printNamesReverse() {
-        orderedByHungarianName().stream().sorted(Comparator.reverseOrder()).forEach(e -> System.out.println(e));
+        orderedByHungarianName().stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
     }
 
     @Override
     public void printEvenNames() {
-
+        for (int i = 1; i < meetingRooms.size(); i += 2) {
+            orderedByHungarianName().stream().skip(i).limit(1).forEach(System.out::println);
+        }
     }
 
     @Override
     public void printAreas() {
-        meetingRooms.stream().sorted(Comparator.comparing(e -> e.getArea())).forEach(MeetingRoom::printAll);
+        meetingRooms.stream().sorted(Comparator.comparing(MeetingRoom::getArea)).forEach(MeetingRoom::printAll);
     }
 
     @Override
