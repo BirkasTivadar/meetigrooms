@@ -33,7 +33,7 @@ public class InMemoryMeetingRoomsRepository implements MeetingRoomsRepository {
 
     @Override
     public void printEvenNames() {
-        for (int i = 1; i < meetingRooms.size(); i += 2) {
+        for (int i = 1; i <= meetingRooms.size(); i += 2) {
             orderedByHungarianName().stream().skip(i).limit(1).forEach(System.out::println);
         }
     }
