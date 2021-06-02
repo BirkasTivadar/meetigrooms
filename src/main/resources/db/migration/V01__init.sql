@@ -1,1 +1,1 @@
-CREATE TABLE meetingrooms (id BIGINT NOT NULL AUTO_INCREMENT, mr_name VARCHAR(255), mr_width INT, mr_length INT, PRIMARY KEY (id));
+create table employees (id bigint not null auto_increment, emp_name varchar(255), primary key (id));

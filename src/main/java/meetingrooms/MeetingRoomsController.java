@@ -5,7 +5,7 @@ public class MeetingRoomsController {
     private MeetingRoomsService meetingRoomsService = new MeetingRoomsService(new MySqlMeetingRoomsRepository());
 
     public void start() {
-        meetingRoomsService.save("targalo", 4, 5);
+        meetingRoomsService.printNames();
     }
 
 

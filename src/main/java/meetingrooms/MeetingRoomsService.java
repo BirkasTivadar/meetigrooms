@@ -11,4 +11,8 @@ public class MeetingRoomsService {
     public void save(String name, int width, int length){
         meetingRoomsRepository.save(name, width, length);
     }
+
+    public void printNames(){
+        meetingRoomsRepository.printNames();
+    }
 }

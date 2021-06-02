@@ -16,7 +16,6 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
 
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
 
-
         flyway.migrate();
 
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -29,7 +28,7 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
 
     @Override
     public void printNames() {
-
+        System.out.println("jo");
     }
 
     @Override
