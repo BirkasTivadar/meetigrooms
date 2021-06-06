@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,14 +74,17 @@ class MySqlMeetingRoomsRepositoryTest {
 
     @Test
     void testGetMeetingRoomsWithName() {
-        assertEquals(8, mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Tárgyaló").getLength());
-        assertEquals(3, mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Kistárgyaló").getWidth());
+        assertEquals(8, mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Tárgyaló").get().getLength());
+        assertEquals(3, mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Kistárgyaló").get().getWidth());
+        assertEquals(Optional.empty(), mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Hello"));
     }
 
 
     @Test
     void testGetMeetingRoomsContains() {
-        assertEquals(10, mySqlMeetingRoomsRepository.getMeetingRoomsContains("ferenc").getWidth());
+        assertEquals(1, mySqlMeetingRoomsRepository.getMeetingRoomsContains("ferenc").size());
+        assertEquals(Arrays.asList(), mySqlMeetingRoomsRepository.getMeetingRoomsContains("bibi"));
+
     }
 
     @Test

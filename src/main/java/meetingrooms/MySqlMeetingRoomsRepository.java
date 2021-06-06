@@ -3,7 +3,9 @@ package meetingrooms;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.util.List;
+import java.util.Optional;
 
 public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
 
@@ -57,17 +59,17 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
     }
 
     @Override
-    public MeetingRoom getMeetingRoomsWithName(String name) {
-        return jdbcTemplate.queryForObject("SELECT * FROM meetingrooms WHERE mr_name= ?;",
+    public Optional<MeetingRoom> getMeetingRoomsWithName(String name) {
+        return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_name= ?;",
                 new Object[]{name}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
-        );
+        ).stream().findAny();
     }
 
     @Override
-    public MeetingRoom getMeetingRoomsContains(String part) {
+    public List<MeetingRoom> getMeetingRoomsContains(String part) {
         String partSql = "%" + part + "%";
 
-        return jdbcTemplate.queryForObject("SELECT * FROM meetingrooms WHERE mr_name LIKE ? ORDER BY mr_name;",
+        return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_name LIKE ? ORDER BY mr_name;",
                 new Object[]{partSql}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         );
     }

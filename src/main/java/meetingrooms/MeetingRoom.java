@@ -10,6 +10,9 @@ public class MeetingRoom {
 
     private int length;
 
+    public MeetingRoom() {
+    }
+
     public MeetingRoom(long id, String name, int width, int length) {
         this(name, width, length);
         this.id = id;

@@ -1,6 +1,7 @@
 package meetingrooms;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MeetingRoomsRepository {
 
@@ -14,9 +15,9 @@ public interface MeetingRoomsRepository {
 
     List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc();
 
-    MeetingRoom getMeetingRoomsWithName(String name);
+    Optional<MeetingRoom> getMeetingRoomsWithName(String name);
 
-    MeetingRoom getMeetingRoomsContains(String part);
+    List<MeetingRoom> getMeetingRoomsContains(String part);
 
     List<MeetingRoom> getAreasLargerThan(int area);
 
