@@ -76,7 +76,6 @@ class MySqlMeetingRoomsRepositoryTest {
         assertEquals(namesByOrderedAreaDesc, mySqlMeetingRoomsRepository.getMeetingRoomsOrderedByAreaDesc().stream().map(MeetingRoom::getName).collect(Collectors.toList()));
     }
 
-
     @Test
     void testGetMeetingRoomsWithName() {
         assertEquals(8, mySqlMeetingRoomsRepository.getMeetingRoomsWithName(TARGYALO).get().getLength());

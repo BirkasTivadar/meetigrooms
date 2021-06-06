@@ -55,7 +55,7 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
     @Override
     public List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc() {
         return jdbcTemplate.query("SELECT * FROM meetingrooms ORDER BY mr_width*mr_length DESC;",
-                (rs, i) -> new MeetingRoom(rs.getLong(ID), rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH)));
+                (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH)));
     }
 
     @Override

@@ -24,6 +24,10 @@ public class MeetingRoom {
         this.length = length;
     }
 
+    public MeetingRoom (MeetingRoom meetingRoom){
+
+    }
+
     public long getId() {
         return id;
     }
