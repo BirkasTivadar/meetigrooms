@@ -24,7 +24,7 @@ public class MeetingRoom {
         this.length = length;
     }
 
-    public MeetingRoom (MeetingRoom meetingRoom){
+    public MeetingRoom(MeetingRoom meetingRoom) {
 
     }
 
@@ -64,13 +64,14 @@ public class MeetingRoom {
         return width * length;
     }
 
-    public void printAll() {
-        System.out.println(String.format("%s : szélesség: %dm, hosszúság: %dm, terület: %dm2", this.getName(), this.getWidth(), this.getLength(), this.getArea()));
+    public String getAll() {
+        return String.format("%s : szélesség: %dm, hosszúság: %dm, terület: %dm2", this.getName(), this.getWidth(), this.getLength(), this.getArea());
     }
 
-    public void printDimensions() {
-        System.out.println(String.format("szélesség: %dm, hosszúság: %dm, terület: %dm2", this.getWidth(), this.getLength(), this.getArea()));
+    public String getDimensions() {
+        return String.format("szélesség: %dm, hosszúság: %dm, terület: %dm2", this.getWidth(), this.getLength(), this.getArea());
     }
+
 
     @Override
     public String toString() {
