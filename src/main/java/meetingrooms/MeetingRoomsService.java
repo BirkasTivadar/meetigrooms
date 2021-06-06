@@ -11,6 +11,10 @@ public class MeetingRoomsService {
         this.meetingRoomsRepository = meetingRoomsRepository;
     }
 
+    public MeetingRoomsRepository getMeetingRoomsRepository() {
+        return meetingRoomsRepository;
+    }
+
     public void save(String name, int width, int length) {
         meetingRoomsRepository.save(name, width, length);
     }

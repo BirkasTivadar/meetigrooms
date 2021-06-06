@@ -12,8 +12,19 @@ public class MeetingRoomsController {
         MeetingRoomsController controller = new MeetingRoomsController();
         controller.choiceDataBaseType();
         controller.dataRecording();
-        controller.printMenu();
-        controller.runMenu();
+
+        for (int i = 0; i < 7; i++) {
+            controller.printMenu();
+            controller.runMenu();
+        }
+
+        if (controller.meetingRoomsService.getMeetingRoomsRepository() instanceof MySqlMeetingRoomsRepository) {
+            controller.deletaAll();
+        }
+    }
+
+    private void deletaAll() {
+        meetingRoomsService.deleteAll();
     }
 
     private static void accept(MeetingRoom e) {
@@ -57,6 +68,7 @@ public class MeetingRoomsController {
             case 7 -> {
                 System.out.println("Hány m2-nél nagyobb tárgyalókra kíváncsi?");
                 int area = scanner.nextInt();
+                scanner.nextLine();
                 meetingRoomsService.getAreasLargerThan(area).forEach(e -> System.out.println(e.getAll()));
             }
         }
