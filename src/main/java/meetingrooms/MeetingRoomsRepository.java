@@ -1,21 +1,25 @@
 package meetingrooms;
 
+import java.util.List;
+
 public interface MeetingRoomsRepository {
 
     void save(String name, int width, int length);
 
-    void printNames();
+    List<String> getOrderedNames();
 
-    void printNamesReverse();
+    List<String> getReversedNames();
 
-    void printEvenNames();
+    List<String> getEvenOrderedNames();
 
-    void printAreas();
+    List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc();
 
-    void printMeetingRoomsWithName(String name);
+    MeetingRoom getMeetingRoomsWithName(String name);
 
-    void printMeetingRoomsContains(String part);
+    MeetingRoom getMeetingRoomsContains(String part);
 
-    void printAreasLargerThan(int area);
+    List<MeetingRoom> getAreasLargerThan(int area);
+
+    void deleteAll();
 
 }

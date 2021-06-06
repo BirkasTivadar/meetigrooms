@@ -3,6 +3,7 @@ package meetingrooms;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.jdbc.core.JdbcTemplate;
+import java.util.List;
 
 public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
 
@@ -27,37 +28,54 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
     }
 
     @Override
-    public void printNames() {
-        System.out.println("jo");
+    public List<String> getOrderedNames() {
+        return jdbcTemplate.query("SELECT mr_name FROM meetingrooms ORDER BY mr_name;",
+                (rs, i) -> rs.getString("mr_name"));
     }
 
     @Override
-    public void printNamesReverse() {
-
+    public List<String> getReversedNames() {
+        return jdbcTemplate.query("SELECT mr_name FROM meetingrooms ORDER BY mr_name DESC;",
+                (rs, i) -> rs.getString("mr_name"));
     }
 
     @Override
-    public void printEvenNames() {
-
+    public List<String> getEvenOrderedNames() {
+        return jdbcTemplate.query("SELECT mr_name FROM (SELECT mr_name, row_number() over (ORDER BY mr_name) as `rn` FROM `meetingrooms`) as `w_rownum` WHERE w_rownum.rn % 2 = 0;",
+                (rs, i) -> rs.getString("mr_name"));
     }
 
     @Override
-    public void printAreas() {
-
+    public List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc() {
+        return jdbcTemplate.query("SELECT * FROM meetingrooms ORDER BY mr_width*mr_length DESC;",
+                (rs, i) -> new MeetingRoom(rs.getLong("id"), rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length")));
     }
 
     @Override
-    public void printMeetingRoomsWithName(String name) {
-
+    public MeetingRoom getMeetingRoomsWithName(String name) {
+        return jdbcTemplate.queryForObject("SELECT * FROM meetingrooms WHERE mr_name= ?;",
+                new Object[]{name}, (rs, i) -> new MeetingRoom(rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length"))
+        );
     }
 
     @Override
-    public void printMeetingRoomsContains(String part) {
+    public MeetingRoom getMeetingRoomsContains(String part) {
+        String partSql = "%" + part + "%";
 
+        return jdbcTemplate.queryForObject("SELECT * FROM meetingrooms WHERE mr_name LIKE ? ORDER BY mr_name;",
+                new Object[]{partSql}, (rs, i) -> new MeetingRoom(rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length"))
+        );
     }
 
     @Override
-    public void printAreasLargerThan(int area) {
+    public List<MeetingRoom> getAreasLargerThan(int area) {
+        return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_width*mr_length > ? ;",
+                new Object[]{area}, (rs, i) -> new MeetingRoom(rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length"))
+        );
+    }
 
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("delete from meetingrooms");
     }
 }
