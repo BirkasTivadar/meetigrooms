@@ -48,7 +48,7 @@ public class InMemoryMeetingRooms implements MeetingRoomsRepository {
 
     @Override
     public List<MeetingRoom> getAreasLargerThan(int area) {
-        return null;
+        return meetingRooms.stream().filter(e -> e.getArea() > area).collect(Collectors.toList());
     }
 
     @Override

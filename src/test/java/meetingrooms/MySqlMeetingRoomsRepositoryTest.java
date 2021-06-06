@@ -95,5 +95,6 @@ class MySqlMeetingRoomsRepositoryTest {
                 "Konferencia");
 
         assertEquals(namesAreaLargerThan, mySqlMeetingRoomsRepository.getAreasLargerThan(20).stream().map(MeetingRoom::getName).collect(Collectors.toList()));
+        assertEquals(Arrays.asList(), mySqlMeetingRoomsRepository.getAreasLargerThan(1000));
     }
 }

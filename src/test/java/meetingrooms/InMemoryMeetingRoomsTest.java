@@ -15,7 +15,6 @@ class InMemoryMeetingRoomsTest {
 
     InMemoryMeetingRooms inMemoryMeetingRooms = new InMemoryMeetingRooms();
 
-
     @BeforeEach
     public void init() {
         inMemoryMeetingRooms.save("Nagytárgyaló", 6, 10);
@@ -81,12 +80,18 @@ class InMemoryMeetingRoomsTest {
 
     @Test
     void getMeetingRoomsContains() {
-
+        assertEquals(1, inMemoryMeetingRooms.getMeetingRoomsContains("ferenc").size());
+        assertEquals(Arrays.asList(), inMemoryMeetingRooms.getMeetingRoomsContains("bibi"));
     }
 
     @Test
     void getAreasLargerThan() {
+        List<String> namesAreaLargerThan = Arrays.asList(
+                "Nagytárgyaló",
+                "Tárgyaló",
+                "Konferencia");
+
+        assertEquals(namesAreaLargerThan, inMemoryMeetingRooms.getAreasLargerThan(20).stream().map(MeetingRoom::getName).collect(Collectors.toList()));
+        assertEquals(Arrays.asList(), inMemoryMeetingRooms.getAreasLargerThan(1000));
     }
-
-
 }
