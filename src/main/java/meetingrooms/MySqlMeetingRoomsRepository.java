@@ -7,6 +7,11 @@ import java.util.List;
 
 public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
 
+    public static final String ID = "id";
+    public static final String NAME = "mr_name";
+    public static final String WIDTH = "mr_width";
+    public static final String LENGTH = "mr_length";
+
     private JdbcTemplate jdbcTemplate;
 
     public MySqlMeetingRoomsRepository() {
@@ -30,31 +35,31 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
     @Override
     public List<String> getOrderedNames() {
         return jdbcTemplate.query("SELECT mr_name FROM meetingrooms ORDER BY mr_name;",
-                (rs, i) -> rs.getString("mr_name"));
+                (rs, i) -> rs.getString(NAME));
     }
 
     @Override
     public List<String> getReversedNames() {
         return jdbcTemplate.query("SELECT mr_name FROM meetingrooms ORDER BY mr_name DESC;",
-                (rs, i) -> rs.getString("mr_name"));
+                (rs, i) -> rs.getString(NAME));
     }
 
     @Override
     public List<String> getEvenOrderedNames() {
         return jdbcTemplate.query("SELECT mr_name FROM (SELECT mr_name, row_number() over (ORDER BY mr_name) as `rn` FROM `meetingrooms`) as `w_rownum` WHERE w_rownum.rn % 2 = 0;",
-                (rs, i) -> rs.getString("mr_name"));
+                (rs, i) -> rs.getString(NAME));
     }
 
     @Override
     public List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc() {
         return jdbcTemplate.query("SELECT * FROM meetingrooms ORDER BY mr_width*mr_length DESC;",
-                (rs, i) -> new MeetingRoom(rs.getLong("id"), rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length")));
+                (rs, i) -> new MeetingRoom(rs.getLong(ID), rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH)));
     }
 
     @Override
     public MeetingRoom getMeetingRoomsWithName(String name) {
         return jdbcTemplate.queryForObject("SELECT * FROM meetingrooms WHERE mr_name= ?;",
-                new Object[]{name}, (rs, i) -> new MeetingRoom(rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length"))
+                new Object[]{name}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         );
     }
 
@@ -63,14 +68,14 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
         String partSql = "%" + part + "%";
 
         return jdbcTemplate.queryForObject("SELECT * FROM meetingrooms WHERE mr_name LIKE ? ORDER BY mr_name;",
-                new Object[]{partSql}, (rs, i) -> new MeetingRoom(rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length"))
+                new Object[]{partSql}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         );
     }
 
     @Override
     public List<MeetingRoom> getAreasLargerThan(int area) {
         return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_width*mr_length > ? ;",
-                new Object[]{area}, (rs, i) -> new MeetingRoom(rs.getString("mr_name"), rs.getInt("mr_width"), rs.getInt("mr_length"))
+                new Object[]{area}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         );
     }
 
