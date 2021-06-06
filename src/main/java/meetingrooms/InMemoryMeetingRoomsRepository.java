@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class InMemoryMeetingRooms implements MeetingRoomsRepository {
+public class InMemoryMeetingRoomsRepository implements MeetingRoomsRepository {
 
     private List<MeetingRoom> meetingRooms = new ArrayList<>();
 
@@ -17,23 +17,28 @@ public class InMemoryMeetingRooms implements MeetingRoomsRepository {
 
     @Override
     public List<String> getOrderedNames() {
-        return meetingRooms.stream().map(MeetingRoom::getName).sorted(Collator.getInstance(new Locale("hu", "HU"))).collect(Collectors.toList());
+        return meetingRooms.stream().map(MeetingRoom::getName).
+                sorted(Collator.getInstance(new Locale("hu", "HU"))).collect(Collectors.toList());
     }
 
     @Override
     public List<String> getReversedNames() {
-        return meetingRooms.stream().map(MeetingRoom::getName).sorted(Collator.getInstance(new Locale("hu", "HU")).reversed()).collect(Collectors.toList());
+        return meetingRooms.stream().map(MeetingRoom::getName).
+                sorted(Collator.getInstance(new Locale("hu", "HU")).reversed()).collect(Collectors.toList());
     }
 
     @Override
     public List<String> getEvenOrderedNames() {
         List<String> orderedNames = this.getOrderedNames();
-        return IntStream.range(0, orderedNames.size()).filter(i -> i % 2 != 0).mapToObj(orderedNames::get).collect(Collectors.toList());
+        return IntStream.range(0, orderedNames.size()).
+                filter(i -> i % 2 != 0).
+                mapToObj(orderedNames::get).collect(Collectors.toList());
     }
 
     @Override
     public List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc() {
-        return meetingRooms.stream().sorted(Comparator.comparing((MeetingRoom::getArea)).reversed()).collect(Collectors.toList());
+        return meetingRooms.stream().
+                sorted(Comparator.comparing((MeetingRoom::getArea)).reversed()).collect(Collectors.toList());
     }
 
     @Override
@@ -43,7 +48,10 @@ public class InMemoryMeetingRooms implements MeetingRoomsRepository {
 
     @Override
     public List<MeetingRoom> getMeetingRoomsContains(String part) {
-        return meetingRooms.stream().filter(e -> e.getName().toLowerCase().contains(part.toLowerCase())).collect(Collectors.toList());
+        return meetingRooms.stream().
+                filter(e -> e.getName().toLowerCase().contains(part.toLowerCase()))
+                .sorted(Comparator.comparing((MeetingRoom::getName)))
+                .collect(Collectors.toList());
     }
 
     @Override

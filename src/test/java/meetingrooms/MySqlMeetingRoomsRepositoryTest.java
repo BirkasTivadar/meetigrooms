@@ -13,14 +13,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MySqlMeetingRoomsRepositoryTest {
 
+    public static final String NAGY_TARGYALO = "NagyTárgyaló";
+    public static final String TARGYALO = "Tárgyaló";
+    public static final String KIS_TARGYALO = "Kistárgyaló";
+    public static final String KONFERENCIA = "Konferencia";
+
     MySqlMeetingRoomsRepository mySqlMeetingRoomsRepository = new MySqlMeetingRoomsRepository();
 
     @BeforeEach
     public void init() {
-        mySqlMeetingRoomsRepository.save("Nagytárgyaló", 6, 10);
-        mySqlMeetingRoomsRepository.save("Tárgyaló", 5, 8);
-        mySqlMeetingRoomsRepository.save("Kistárgyaló", 3, 4);
-        mySqlMeetingRoomsRepository.save("Konferencia", 10, 10);
+        mySqlMeetingRoomsRepository.save(NAGY_TARGYALO, 6, 10);
+        mySqlMeetingRoomsRepository.save(TARGYALO, 5, 8);
+        mySqlMeetingRoomsRepository.save(KIS_TARGYALO, 3, 4);
+        mySqlMeetingRoomsRepository.save(KONFERENCIA, 10, 10);
     }
 
     @AfterEach
@@ -32,10 +37,10 @@ class MySqlMeetingRoomsRepositoryTest {
     @Test
     void testGetOrderedNames() {
         List<String> orderedNames = Arrays.asList(
-                "Kistárgyaló",
-                "Konferencia",
-                "Nagytárgyaló",
-                "Tárgyaló");
+                KIS_TARGYALO,
+                KONFERENCIA,
+                NAGY_TARGYALO,
+                TARGYALO);
 
         assertEquals(orderedNames, mySqlMeetingRoomsRepository.getOrderedNames());
     }
@@ -43,10 +48,10 @@ class MySqlMeetingRoomsRepositoryTest {
     @Test
     void testGetReversedNames() {
         List<String> reversedNames = Arrays.asList(
-                "Tárgyaló",
-                "Nagytárgyaló",
-                "Konferencia",
-                "Kistárgyaló");
+                TARGYALO,
+                NAGY_TARGYALO,
+                KONFERENCIA,
+                KIS_TARGYALO);
 
         assertEquals(reversedNames, mySqlMeetingRoomsRepository.getReversedNames());
     }
@@ -54,8 +59,8 @@ class MySqlMeetingRoomsRepositoryTest {
     @Test
     void testGetEvenOrderedNames() {
         List<String> evenOrderedNames = Arrays.asList(
-                "Konferencia",
-                "Tárgyaló");
+                KONFERENCIA,
+                TARGYALO);
 
         assertEquals(evenOrderedNames, mySqlMeetingRoomsRepository.getEvenOrderedNames());
     }
@@ -63,10 +68,10 @@ class MySqlMeetingRoomsRepositoryTest {
     @Test
     void testGetMeetingRoomsOrderedByAreaDesc() {
         List<String> namesByOrderedAreaDesc = Arrays.asList(
-                "Konferencia",
-                "Nagytárgyaló",
-                "Tárgyaló",
-                "Kistárgyaló");
+                KONFERENCIA,
+                NAGY_TARGYALO,
+                TARGYALO,
+                KIS_TARGYALO);
 
         assertEquals(namesByOrderedAreaDesc, mySqlMeetingRoomsRepository.getMeetingRoomsOrderedByAreaDesc().stream().map(MeetingRoom::getName).collect(Collectors.toList()));
     }
@@ -74,15 +79,21 @@ class MySqlMeetingRoomsRepositoryTest {
 
     @Test
     void testGetMeetingRoomsWithName() {
-        assertEquals(8, mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Tárgyaló").get().getLength());
-        assertEquals(3, mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Kistárgyaló").get().getWidth());
+        assertEquals(8, mySqlMeetingRoomsRepository.getMeetingRoomsWithName(TARGYALO).get().getLength());
+        assertEquals(3, mySqlMeetingRoomsRepository.getMeetingRoomsWithName(KIS_TARGYALO).get().getWidth());
         assertEquals(Optional.empty(), mySqlMeetingRoomsRepository.getMeetingRoomsWithName("Hello"));
     }
 
-
     @Test
     void testGetMeetingRoomsContains() {
+        List<String> namesMeetingRoomsContains = Arrays.asList(
+                KIS_TARGYALO,
+                NAGY_TARGYALO,
+                TARGYALO
+        );
         assertEquals(1, mySqlMeetingRoomsRepository.getMeetingRoomsContains("ferenc").size());
+        assertEquals(namesMeetingRoomsContains, mySqlMeetingRoomsRepository.getMeetingRoomsContains("tárgy").stream().map(MeetingRoom::getName).collect(Collectors.toList()));
+
         assertEquals(Arrays.asList(), mySqlMeetingRoomsRepository.getMeetingRoomsContains("bibi"));
 
     }
@@ -90,9 +101,9 @@ class MySqlMeetingRoomsRepositoryTest {
     @Test
     void testGetAreasLargerThan() {
         List<String> namesAreaLargerThan = Arrays.asList(
-                "Nagytárgyaló",
-                "Tárgyaló",
-                "Konferencia");
+                NAGY_TARGYALO,
+                TARGYALO,
+                KONFERENCIA);
 
         assertEquals(namesAreaLargerThan, mySqlMeetingRoomsRepository.getAreasLargerThan(20).stream().map(MeetingRoom::getName).collect(Collectors.toList()));
         assertEquals(Arrays.asList(), mySqlMeetingRoomsRepository.getAreasLargerThan(1000));

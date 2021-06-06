@@ -67,4 +67,14 @@ public class MeetingRoom {
     public void printDimensions() {
         System.out.println(String.format("szélesség: %dm, hosszúság: %dm, terület: %dm2", this.getWidth(), this.getLength(), this.getArea()));
     }
+
+    @Override
+    public String toString() {
+        return "MeetingRoom{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", width=" + width +
+                ", length=" + length +
+                '}';
+    }
 }
