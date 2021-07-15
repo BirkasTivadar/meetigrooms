@@ -11,19 +11,15 @@ public class MeetingRoomsController {
     public static void main(String[] args) {
         MeetingRoomsController controller = new MeetingRoomsController();
         controller.choiceDataBaseType();
-        controller.dataRecording();
+        controller.recordMeetingRooms();
 
-        for (int i = 0; i < 7; i++) {
-            controller.printMenu();
-            controller.runMenu();
-        }
+        controller.printMenu();
+        controller.runMenu();
 
-        if (controller.meetingRoomsService.getMeetingRoomsRepository() instanceof MySqlMeetingRoomsRepository) {
-            controller.deletaAll();
-        }
+        controller.deleteAll();
     }
 
-    private void deletaAll() {
+    private void deleteAll() {
         meetingRoomsService.deleteAll();
     }
 
@@ -43,35 +39,58 @@ public class MeetingRoomsController {
     private void callMenu(int menuNumber) {
         switch (menuNumber) {
 
-            case 1 -> meetingRoomsService.getOrderedNames().forEach(System.out::println);
+            case 1 -> printOrderedNames();
 
-            case 2 -> meetingRoomsService.getReversedNames().forEach(System.out::println);
+            case 2 -> printReversedNames();
 
-            case 3 -> meetingRoomsService.getEvenOrderedNames().forEach(System.out::println);
+            case 3 -> printEvenOrderdNames();
 
-            case 4 -> meetingRoomsService.getMeetingRoomsOrderedByAreaDesc().forEach(e -> System.out.println(e.getAll()));
+            case 4 -> printMeetingRoomsOrderedByAreaDesc();
 
-            case 5 -> {
-                System.out.println("Milyen névre keressek?");
-                String name = scanner.nextLine();
+            case 5 -> printDimensionsByName();
 
-                System.out.println(meetingRoomsService.getMeetingRoomsWithName(name).isPresent() ? meetingRoomsService.getMeetingRoomsWithName(name).get().getDimensions() : "Nincs ilyen nevű tárgyaló");
-            }
+            case 6 -> printDimensionsByPartOfName();
 
-            case 6 -> {
-                System.out.println("Milyen névtöredékre keressek?");
-                String part = scanner.nextLine();
-
-                meetingRoomsService.getMeetingRoomsContains(part).forEach(e -> System.out.println(e.getDimensions()));
-            }
-
-            case 7 -> {
-                System.out.println("Hány m2-nél nagyobb tárgyalókra kíváncsi?");
-                int area = scanner.nextInt();
-                scanner.nextLine();
-                meetingRoomsService.getAreasLargerThan(area).forEach(e -> System.out.println(e.getAll()));
-            }
+            case 7 -> printAreasLargerThan();
         }
+    }
+
+    private void printAreasLargerThan() {
+        System.out.println("Hány m2-nél nagyobb tárgyalókra kíváncsi?");
+        int area = scanner.nextInt();
+        scanner.nextLine();
+
+        meetingRoomsService.getAreasLargerThan(area).forEach(e -> System.out.println(e.getAll()));
+    }
+
+    private void printDimensionsByPartOfName() {
+        System.out.println("Milyen névtöredékre keressek?");
+        String part = scanner.nextLine();
+
+        meetingRoomsService.getMeetingRoomsContains(part).forEach(e -> System.out.println(e.getDimensions()));
+    }
+
+    private void printDimensionsByName() {
+        System.out.println("Milyen névre keressek?");
+        String name = scanner.nextLine();
+
+        System.out.println(meetingRoomsService.getMeetingRoomsWithName(name).isPresent() ? meetingRoomsService.getMeetingRoomsWithName(name).get().getDimensions() : "Nincs ilyen nevű tárgyaló");
+    }
+
+    private void printMeetingRoomsOrderedByAreaDesc() {
+        meetingRoomsService.getMeetingRoomsOrderedByAreaDesc().forEach(e -> System.out.println(e.getAll()));
+    }
+
+    private void printEvenOrderdNames() {
+        meetingRoomsService.getEvenOrderedNames().forEach(System.out::println);
+    }
+
+    private void printReversedNames() {
+        meetingRoomsService.getReversedNames().forEach(System.out::println);
+    }
+
+    private void printOrderedNames() {
+        meetingRoomsService.getOrderedNames().forEach(System.out::println);
     }
 
     private void printMenu() {
@@ -85,7 +104,7 @@ public class MeetingRoomsController {
         System.out.println("7. Keresés terület alapján");
     }
 
-    private void dataRecording() {
+    private void recordMeetingRooms() {
         System.out.println("Hány tárgyalót szeretne rögzíteni?");
         int meetingRoomsNumber = scanner.nextInt();
         scanner.nextLine();

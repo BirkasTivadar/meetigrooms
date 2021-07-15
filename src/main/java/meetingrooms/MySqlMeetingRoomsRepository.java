@@ -4,6 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,13 +56,15 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
     @Override
     public List<MeetingRoom> getMeetingRoomsOrderedByAreaDesc() {
         return jdbcTemplate.query("SELECT * FROM meetingrooms ORDER BY mr_width*mr_length DESC;",
-                (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH)));
+                (rs, i) -> createMeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH)));
+//                (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH)));
     }
+
 
     @Override
     public Optional<MeetingRoom> getMeetingRoomsWithName(String name) {
         return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_name= ?;",
-                new Object[]{name}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
+                new Object[]{name}, (rs, i) -> createMeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         ).stream().findAny();
     }
 
@@ -70,19 +73,23 @@ public class MySqlMeetingRoomsRepository implements MeetingRoomsRepository {
         String partSql = "%" + part + "%";
 
         return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_name LIKE ? ORDER BY mr_name;",
-                new Object[]{partSql}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
+                new Object[]{partSql},  (rs, i) -> createMeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         );
     }
 
     @Override
     public List<MeetingRoom> getAreasLargerThan(int area) {
         return jdbcTemplate.query("SELECT * FROM meetingrooms WHERE mr_width*mr_length > ? ;",
-                new Object[]{area}, (rs, i) -> new MeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
+                new Object[]{area},  (rs, i) -> createMeetingRoom(rs.getString(NAME), rs.getInt(WIDTH), rs.getInt(LENGTH))
         );
     }
 
     @Override
     public void deleteAll() {
         jdbcTemplate.update("delete from meetingrooms");
+    }
+
+    private MeetingRoom createMeetingRoom(String name, int width, int length) {
+        return new MeetingRoom(name, width, length);
     }
 }
