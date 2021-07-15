@@ -33,7 +33,6 @@ class MySqlMeetingRoomsRepositoryTest {
         mySqlMeetingRoomsRepository.deleteAll();
     }
 
-
     @Test
     void testGetOrderedNames() {
         List<String> orderedNames = Arrays.asList(
