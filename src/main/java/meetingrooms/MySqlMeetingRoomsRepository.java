@@ -4,7 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
